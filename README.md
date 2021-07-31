@@ -1,2 +1,4 @@
-# cybersoft-java12-gira
- Gira Application for Education Purpose
+# Cybersoft Gira Application
+## Gira Application for Education Purpose
+
+Gira Application for Java 12 class
