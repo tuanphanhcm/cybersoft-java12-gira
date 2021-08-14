@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -35,7 +36,26 @@ public class Role extends BaseEntity {
 			inverseJoinColumns = @JoinColumn(name = "program_id")
 	)
 	private Set<Program> programs = new HashSet<>();
-
+	/*
+	 * Các lưu ý khi thiết lập một quan hệ ManyToMany
+	 * 1. Xác định chủ của quan hệ
+	 * 2. Dùng Set, không sử dụng List
+	 * 3. Tránh sử dụng CascadeType ALL và REMOVE
+	 * 4. Fetching lazy cả 2 chiều của quan hệ
+	 * 5. Thiết lập Join Table
+	 * 6. Giữ sự liên kết giữa các quan hệ đồng bộ
+	 */
+	
+	/* helper method */
+	public void addProgram(Program program) {
+		this.programs.add(program);
+		program.getRoles().add(this);
+	}
+	
+	public void removeProgram(Program program) {
+		this.programs.remove(program);
+		program.getRoles().remove(this);
+	}
 	
 	/* getters/setters */
 	public String getName() {

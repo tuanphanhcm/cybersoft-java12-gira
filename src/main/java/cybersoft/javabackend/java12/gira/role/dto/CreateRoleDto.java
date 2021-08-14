@@ -8,7 +8,6 @@ public class CreateRoleDto {
 	@Size(min = 3, max = 50, message = "{role.name.size}")
 	private String name;
 	
-	@NotBlank
 	private String description;
 	
 	public String getName() {
