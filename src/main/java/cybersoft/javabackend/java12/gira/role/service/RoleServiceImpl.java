@@ -3,6 +3,8 @@ package cybersoft.javabackend.java12.gira.role.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 
 import cybersoft.javabackend.java12.gira.role.dto.AddProgramDto;
@@ -35,7 +37,7 @@ public class RoleServiceImpl implements RoleService {
 	public Role addNewRole(CreateRoleDto dto) {
 		Role newRole = new Role();
 		
-		newRole.setName(dto.getName());
+		newRole.setName(dto.getName().toUpperCase());
 		newRole.setDescription(dto.getDescription());
 		
 		return repository.save(newRole);
@@ -47,6 +49,26 @@ public class RoleServiceImpl implements RoleService {
 		Program program = programRepository.getById(dto.getProgramId());
 		
 		role.addProgram(program);
+		
+		return repository.save(role);
+	}
+
+	@Override
+	public boolean isTakenName(String roleName) {
+		return repository.countByName(roleName.toUpperCase()) >= 1;
+	}
+
+	@Override
+	public boolean isExistedId(Long roleId) {
+		return repository.existsById(roleId);
+	}
+
+	@Override
+	public Role removeProgram(@Valid AddProgramDto dto) {
+		Role role = repository.getById(dto.getRoleId()); 
+		Program program = programRepository.getById(dto.getProgramId());
+		
+		role.removeProgram(program);
 		
 		return repository.save(role);
 	}

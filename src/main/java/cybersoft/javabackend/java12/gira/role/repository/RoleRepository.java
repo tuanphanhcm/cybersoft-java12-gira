@@ -14,6 +14,8 @@ import cybersoft.javabackend.java12.gira.role.entity.Role;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 	
 	@Transactional(readOnly = true)
-	@Query("SELECT r FROM Role r")
+	@Query("SELECT r FROM Role r") // JPQL - Java Persistence Query Language
 	List<RoleDto> findAllDto();
+
+	int countByName(String roleName);
 }
