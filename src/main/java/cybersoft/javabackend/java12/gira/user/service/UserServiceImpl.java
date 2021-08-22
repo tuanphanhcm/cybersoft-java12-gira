@@ -2,6 +2,7 @@ package cybersoft.javabackend.java12.gira.user.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import cybersoft.javabackend.java12.gira.user.dto.CreateUserDto;
@@ -13,9 +14,11 @@ import cybersoft.javabackend.java12.gira.user.util.UserStatus;
 @Service
 public class UserServiceImpl implements UserService {
 	private UserRepository repository;
+	private PasswordEncoder encoder;
 	
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		repository = userRepository;
+		encoder = passwordEncoder;
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService {
 		
 		newUser.setUsername(dto.getUsername());
 		newUser.setEmail(dto.getEmail());
-		newUser.setPassword(dto.getPassword()); // encode password  trước khi set
+		newUser.setPassword(encoder.encode(dto.getPassword())); // encode password  trước khi set
 		newUser.setStatus(UserStatus.ACTIVE);
 		
 		return repository.save(newUser);

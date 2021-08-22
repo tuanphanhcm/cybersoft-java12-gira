@@ -22,7 +22,7 @@ import cybersoft.javabackend.java12.gira.role.entity.Group;
 import cybersoft.javabackend.java12.gira.role.service.itf.GroupService;
 
 @RestController
-@RequestMapping("/group")
+@RequestMapping("api/group")
 public class GroupController {
 	private GroupService service;
 	
