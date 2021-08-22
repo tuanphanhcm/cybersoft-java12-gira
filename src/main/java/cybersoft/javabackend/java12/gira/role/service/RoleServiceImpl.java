@@ -80,7 +80,7 @@ public class RoleServiceImpl implements RoleService {
 	public Role update(UpdateRoleDto dto, Long id) {
 		Role role = repository.getById(id);
 		
-		role.setName(dto.getName());
+		role.setName(dto.getName().toUpperCase()); // add uppercase
 		role.setDescription(dto.getDescription());
 		
 		return repository.save(role);

@@ -48,7 +48,8 @@ public class User extends BaseEntity {
 	
 	@ManyToMany(mappedBy = "users")
 	private Set<Group> groups = new HashSet<>();
-
+	
+	
 	public String getUsername() {
 		return username;
 	}
