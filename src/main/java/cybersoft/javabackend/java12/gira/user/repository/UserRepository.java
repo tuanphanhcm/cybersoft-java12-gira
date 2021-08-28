@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	int countByEmail(String email);
 
-	@Query("SELECT u FROM User u JOIN FETCH u.groups")
+	@Query("SELECT u FROM User u LEFT JOIN FETCH u.groups WHERE u.username = ?1")
 	Optional<User> findByUsernameWithGroups(String username);
 
 }

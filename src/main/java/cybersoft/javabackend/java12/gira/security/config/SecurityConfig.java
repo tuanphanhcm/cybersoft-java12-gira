@@ -1,6 +1,7 @@
 package cybersoft.javabackend.java12.gira.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,14 +13,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import io.swagger.models.HttpMethod;
+import cybersoft.javabackend.java12.gira.security.jwt.JwtAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
+	@Qualifier("userDetailsServiceImpl")
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JwtAuthorizationFilter jwtAuthorizationFilter;
 	
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
@@ -27,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
+	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
@@ -45,12 +52,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// cấu hình session
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
+		// thêm filter để validate jwt token
+		http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+		
 		// disable csrf
 		http.csrf().disable();
 		
 		// cấu hình xác thực cho các api
 		http.antMatcher("/api/**").authorizeRequests()
-			.anyRequest().permitAll();
+			.antMatchers("/api/auth/login").permitAll()
+			.anyRequest().authenticated();
 		
 	}
 	

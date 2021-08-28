@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -17,6 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+@Component
 public class JwtUtils {
 	private static final Logger logger = LoggerFactory.getLogger(Jwts.class);
 	
@@ -39,7 +41,7 @@ public class JwtUtils {
 	
 	public boolean validateJwtToken(String token) {
 		try {
-			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJwt(token);
+			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
 			return true;
 		} catch (SignatureException e1) {
 			logger.error("Invalid JWT Signature: {}", e1.getMessage());
@@ -63,5 +65,9 @@ public class JwtUtils {
 			return header.substring(tokenPrefix.length(), header.length());
 		
 		return null;
+	}
+	
+	public String getUsernameFromToken(String token) {
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 	}
 }
