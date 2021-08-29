@@ -5,7 +5,11 @@ import javax.validation.constraints.Size;
 
 import cybersoft.javabackend.java12.gira.role.validation.annotation.UniqueRoleName;
 import cybersoft.javabackend.java12.gira.role.validation.annotation.ValidDescription;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class CreateRoleDto {
 	@NotBlank(message = "{role.name.not-blank}")
 	@Size(min = 3, max = 50, message = "{role.name.size}")
@@ -14,17 +18,4 @@ public class CreateRoleDto {
 	
 	@ValidDescription
 	private String description;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }

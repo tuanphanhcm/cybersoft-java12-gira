@@ -24,7 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("SELECT u FROM User u LEFT JOIN FETCH u.groups WHERE u.username = ?1")
 	Optional<User> findByUsernameWithGroups(String username);
 
-	@Query("SELECT p.name, p.method, p.path FROM User u JOIN u.groups g JOIN g.roles r JOIN r.programs p WHERE u.username = ?1")
+	@Query("SELECT p.name AS name, p.method AS method, p.path AS path FROM User u JOIN u.groups g JOIN g.roles r JOIN r.programs p WHERE u.username = ?1")
 	List<UserProgramDto> findAllProgramsByUsername(String username);
 
+	
 }
