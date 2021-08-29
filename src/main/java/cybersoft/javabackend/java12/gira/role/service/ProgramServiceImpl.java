@@ -25,11 +25,11 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	public Program saveProgram(CreateProgramDto dto) {
-		Program program = new Program();
-		
-		program.setName(dto.getName());
-		program.setMethod(dto.getMethod());
-		program.setPath(dto.getPath());
+		Program program = Program.builder()
+				.name(dto.getName())
+				.method(dto.getMethod())
+				.path(dto.getPath())
+				.build();
 		
 		return repository.save(program);
 	}

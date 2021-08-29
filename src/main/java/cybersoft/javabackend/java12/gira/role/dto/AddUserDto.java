@@ -8,12 +8,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class AddRoleDto {
+public class AddUserDto {
 	@NotNull
 	@Min(value = 1)
-	private Long groupId;
+	private Long userId;
 	
 	@NotNull
 	@Min(value = 1)
-	private Long roleId;
+	private Long groupId;
 }

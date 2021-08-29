@@ -39,6 +39,11 @@ public class UserController {
 	@GetMapping("/{username}/programs")
 	public Object getAllProgramsOfUser(@PathVariable("username") String username ) {
 		List<UserProgramDto> programs = service.findAllProgramsOfUser(username);
+		/*
+		 * 	path: /api/user/%/programs
+		 *  thực tế: /api/user/admin/programs
+		 */
+		"/api/user/admin/programs".matches("/api/user/%/programs");
 		
 		return ResponseHandler.getResponse(programs, HttpStatus.OK);
 	}
