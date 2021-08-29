@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cybersoft.javabackend.java12.gira.common.ResponseHandler;
+import cybersoft.javabackend.java12.gira.role.dto.AddRoleDto;
 import cybersoft.javabackend.java12.gira.role.dto.CreateGroupDto;
 import cybersoft.javabackend.java12.gira.role.dto.GroupDto;
 import cybersoft.javabackend.java12.gira.role.entity.Group;
@@ -53,8 +54,13 @@ public class GroupController {
 	}
 	
 	@PostMapping("/add-role")
-	public Object addRoleToGroup() {
-		return null;
+	public Object addRoleToGroup(@Valid @RequestBody AddRoleDto dto, BindingResult errors) {
+		if(errors.hasErrors())
+			return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+		
+		Group updatedGroup = service.addRole(dto);
+		
+		return ResponseHandler.getResponse(updatedGroup, HttpStatus.OK);
 	}
 	
 	@PostMapping("/remove-role")

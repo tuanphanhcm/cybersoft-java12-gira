@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import cybersoft.javabackend.java12.gira.user.dto.UserDto;
+import cybersoft.javabackend.java12.gira.user.dto.UserProgramDto;
 import cybersoft.javabackend.java12.gira.user.entity.User;
 
 @Repository
@@ -22,5 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("SELECT u FROM User u LEFT JOIN FETCH u.groups WHERE u.username = ?1")
 	Optional<User> findByUsernameWithGroups(String username);
+
+	@Query("SELECT p.name, p.method, p.path FROM User u JOIN u.groups g JOIN g.roles r JOIN r.programs p WHERE u.username = ?1")
+	List<UserProgramDto> findAllProgramsByUsername(String username);
 
 }

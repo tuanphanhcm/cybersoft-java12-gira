@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cybersoft.javabackend.java12.gira.user.dto.CreateUserDto;
 import cybersoft.javabackend.java12.gira.user.dto.UserDto;
+import cybersoft.javabackend.java12.gira.user.dto.UserProgramDto;
 import cybersoft.javabackend.java12.gira.user.entity.User;
 import cybersoft.javabackend.java12.gira.user.repository.UserRepository;
 import cybersoft.javabackend.java12.gira.user.util.UserStatus;
@@ -46,5 +47,10 @@ public class UserServiceImpl implements UserService {
 		newUser.setStatus(UserStatus.ACTIVE);
 		
 		return repository.save(newUser);
+	}
+
+	@Override
+	public List<UserProgramDto> findAllProgramsOfUser(String username) {
+		return repository.findAllProgramsByUsername(username);
 	}
 }
