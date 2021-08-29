@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import cybersoft.javabackend.java12.gira.common.entity.BaseEntity;
 import cybersoft.javabackend.java12.gira.user.entity.User;
 
@@ -25,17 +27,24 @@ public class Group extends BaseEntity {
 	
 	private String description;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "gira_group_role",
 	joinColumns = @JoinColumn(name = "group_id"),
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
+	@JsonIgnore
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "gira_group_user",
 	joinColumns = @JoinColumn(name = "group_id"),
 	inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users = new HashSet<>();
+	
+	public void addRole(Role role) {
+		roles.add(role);
+		role.getGroups().add(this);
+	}
 	
 	public Set<User> getUsers() {
 		return users;
